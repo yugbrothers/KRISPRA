@@ -1,5 +1,8 @@
+const express = require('express');
+const router = express.Router();
+
 router.get('/', (req, res) => {
-    console.log("✅ /checkout route hit");
-    res.sendFile('checkout.html', { root: './views' });
-  });
-  
+  res.sendFile('checkout.html', { root: './views' });
+});
+
+module.exports = router;
