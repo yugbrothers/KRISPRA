@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout | KRISPRA</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">KRISPRA</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+
+  <div class="checkout-container">
+    <h1>Checkout</h1>
+    <div class="product-summary">
+      <img id="product-img" src="" alt="Product Image" />
+      <h2 id="product-name"></h2>
+      <p id="product-price"></p>
+    </div>
+    <button onclick="proceedToPay()">Proceed to Pay</button>
+  </div>
+
+  <script>
+    // Simulate getting product data from URL (you can replace this with server data later)
+    const params = new URLSearchParams(window.location.search);
+    document.getElementById("product-img").src = params.get("img");
+    document.getElementById("product-name").innerText = params.get("name");
+    document.getElementById("product-price").innerText = params.get("price");
+
+    function proceedToPay() {
+      alert("Redirecting to payment gateway...");
+    }
+  </script>
+
+</body>
+</html>

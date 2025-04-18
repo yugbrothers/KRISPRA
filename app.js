@@ -2,16 +2,25 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Import route files
+// Route imports
 const mensRoutes = require('./routes/mens');
 const womenRoutes = require('./routes/women');
+const productRoutes = require('./routes/products'); // Add this line
+const checkoutRoutes = require('./routes/checkout'); // add this line
 
-// Serve static files (CSS, images, etc.)
+// Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Use the routers
 app.use('/mens', mensRoutes);
 app.use('/women', womenRoutes);
+app.use('/buy', productRoutes); // Use this route for buy links
+app.use('/checkout', checkoutRoutes); // add this line
+app.use(express.urlencoded({ extended: true })); // to parse form data
+
+app.post('/pay', (req, res) => {
+  const { name, price } = req.body;
+  res.send(`<h2>Thank you for purchasing <strong>${name}</strong> for <strong>${price}</strong>!</h2>`);
+});
 
 // Home route
 app.get('/', (req, res) => {
@@ -22,5 +31,3 @@ app.get('/', (req, res) => {
 app.listen(5000, () => {
   console.log('Server running on http://localhost:5000');
 });
-
-
