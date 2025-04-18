@@ -2,14 +2,25 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Serve static files (CSS, images, JS) from public folder
+// Import route files
+const mensRoutes = require('./routes/mens');
+const womenRoutes = require('./routes/women');
+
+// Serve static files (CSS, images, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route to render your HTML page
+// Use the routers
+app.use('/mens', mensRoutes);
+app.use('/women', womenRoutes);
+
+// Home route
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'mens.html'));
+  res.sendFile('index.html', { root: './views' });
 });
 
-app.listen(8080, () => {
-  console.log('Server running on http://localhost:8080');
+// Start the server
+app.listen(5000, () => {
+  console.log('Server running on http://localhost:5000');
 });
+
+

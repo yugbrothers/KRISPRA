@@ -25,12 +25,9 @@
   </nav>
 
   <!-- ✅ HERO SECTION -->
-  <section class="hero">
-    <div class="hero-slider"></div>
-    <div class="hero-content">
-      <h1>Welcome to KRISPRA</h1>
-      <p>Luxury Redefined in Indian Ethnic Fashion</p>
-    </div>
+  <section class="hero" style="background: url('/images/twam1.jpg') no-repeat center center/cover;">
+    <h1>Welcome to KRISPRA</h1>
+    <p>Luxury Redefined in Indian Ethnic Fashion</p>
   </section>
 
   <!-- ✅ CATEGORIES -->
@@ -46,23 +43,6 @@
       <a href="/women"><button>Explore</button></a>
     </div>
   </div>
-
-  <!-- ✅ JS SLIDER SCRIPT -->
-  <script>
-    const images = [
-      "/images/sara2.png",
-      "/images/model1.png",
-      "/images/twam3.png"
-    ];
-    let current = 0;
-    const slider = document.querySelector('.hero-slider');
-    slider.style.backgroundImage = `url(${images[2]})`;
-
-    setInterval(() => {
-      current = (current + 1) % images.length;
-      slider.style.backgroundImage = `url(${images[current]})`;
-    }, 2000);
-  </script>
 
 </body>
 </html>
