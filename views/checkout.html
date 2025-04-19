@@ -4,6 +4,27 @@
   <meta charset="UTF-8" />
   <title>Checkout | KRISPRA</title>
   <link rel="stylesheet" href="/css/style.css" />
+  <script type="module">
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById("product-img").src = params.get("img");
+      document.getElementById("product-name").innerText = params.get("name");
+      document.getElementById("product-price").innerText = params.get("price");
+
+      // Save to global variable for later
+      window.productData = {
+        name: params.get("name"),
+        price: params.get("price"),
+        img: params.get("img")
+      };
+    };
+
+    window.proceedToSignIn = () => {
+      const { name, price, img } = window.productData;
+      const query = `?name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}&img=${encodeURIComponent(img)}`;
+      window.location.href = "/signin" + query;
+    };
+  </script>
 </head>
 <body>
 
@@ -21,20 +42,9 @@
       <h2 id="product-name"></h2>
       <p id="product-price"></p>
     </div>
-    <button onclick="proceedToPay()">Proceed to Pay</button>
+
+    <button onclick="proceedToSignIn()">Proceed to Pay</button>
   </div>
-
-  <script>
-    // Simulate getting product data from URL (you can replace this with server data later)
-    const params = new URLSearchParams(window.location.search);
-    document.getElementById("product-img").src = params.get("img");
-    document.getElementById("product-name").innerText = params.get("name");
-    document.getElementById("product-price").innerText = params.get("price");
-
-    function proceedToPay() {
-      alert("Redirecting to payment gateway...");
-    }
-  </script>
 
 </body>
 </html>

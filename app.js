@@ -26,6 +26,16 @@ app.post('/pay', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile('index.html', { root: './views' });
 });
+// Signin route
+app.get('/signin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'signin.html'));
+});
+
+// Pay route
+app.get('/pay', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'pay.html'));
+});
+
 
 // Start the server
 app.listen(5000, () => {
