@@ -5,75 +5,91 @@
   <title>Payment | KRISPRA</title>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      padding: 40px;
-      background: #f9f4f0;
-    }
-    .summary-box {
+    .payment-container {
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 20px;
       background: #fff;
-      padding: 30px;
-      max-width: 600px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
       border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-family: 'Poppins', sans-serif;
     }
-    h2 {
-      text-align: center;
-      font-family: 'Playfair Display', serif;
-    }
-    .info {
-      margin-bottom: 20px;
-    }
-    .info strong {
-      display: inline-block;
-      width: 120px;
-    }
-    .payment-buttons button {
+    .product-info img {
       width: 100%;
-      padding: 15px;
-      margin-top: 10px;
-      border: none;
+      max-width: 300px;
+      height: auto;
       border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
     }
-    .cod {
-      background: #000;
-      color: white;
+    .hidden {
+      display: none;
     }
-    .online {
-      background: #e91e63;
-      color: white;
+    .payment-options {
+      margin: 20px 0;
+    }
+    .confirmation {
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: green;
     }
   </style>
 </head>
 <body>
-  <div class="summary-box">
-    <h2>Review & Pay</h2>
-    <div class="info" id="summary"></div>
 
-    <div class="payment-buttons">
-      <button class="cod" onclick="pay('Cash on Delivery')">Cash on Delivery</button>
-      <button class="online" onclick="pay('Online Payment')">Online Payment</button>
+  <div class="payment-container">
+    <h1>Review and Pay</h1>
+
+    <div class="product-info">
+      <img id="product-img" src="" alt="Product Image" />
+      <h2 id="product-name"></h2>
+      <p id="product-price"></p>
+    </div>
+
+    <div class="payment-options">
+      <label>
+        <input type="radio" name="payment" value="cod" /> Cash on Delivery
+      </label>
+      <br />
+      <label>
+        <input type="radio" name="payment" value="online" /> Online Payment
+      </label>
+    </div>
+
+    <button id="placeOrderBtn">Place Order</button>
+
+    <div class="confirmation hidden" id="confirmationMessage">
+      ✅ Your order has been placed successfully!
     </div>
   </div>
 
   <script>
-    const data = JSON.parse(sessionStorage.getItem("userData"));
-    const summary = document.getElementById("summary");
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get("name");
+      const price = params.get("price");
+      const img = params.get("img");
 
-    summary.innerHTML = `
-      <p><strong>Name:</strong> ${data.firstName} ${data.lastName}</p>
-      <p><strong>Address:</strong> ${data.address}</p>
-      <p><strong>Phone:</strong> ${data.phone}</p>
-      <p><strong>Product:</strong> ${data.productName}</p>
-      <p><strong>Price:</strong> ${data.price}</p>
-    `;
+      document.getElementById("product-name").innerText = name;
+      document.getElementById("product-price").innerText = price;
+      document.getElementById("product-img").src = img;
 
-    function pay(method) {
-      alert(`Payment method selected: ${method}\nThank you, ${data.firstName}!`);
-    }
+      // Store data if needed
+      window.product = { name, price, img };
+    };
+
+    document.getElementById("placeOrderBtn").addEventListener("click", () => {
+      const selectedMethod = document.querySelector('input[name="payment"]:checked');
+      if (!selectedMethod) {
+        alert("Please select a payment method.");
+        return;
+      }
+
+      document.getElementById("confirmationMessage").classList.remove("hidden");
+
+      // Optionally disable the button
+      document.getElementById("placeOrderBtn").disabled = true;
+    });
   </script>
+
 </body>
 </html>

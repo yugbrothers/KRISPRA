@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sign In | KRISPRA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css" />
   <style>
@@ -64,14 +64,6 @@
     #googleBtn img {
       width: 20px;
     }
-    #product-info {
-      margin-top: 25px;
-      text-align: center;
-    }
-    #product-info img {
-      margin-top: 10px;
-      border-radius: 10px;
-    }
   </style>
 </head>
 <body>
@@ -102,18 +94,11 @@
       <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Logo" />
       Sign in with Gmail
     </button>
-
-    <!-- Product Preview -->
-    <div id="product-info">
-      <h2 id="product-name"></h2>
-      <p id="product-price"></p>
-      <img id="product-img" src="" width="150" />
-    </div>
   </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
 
   <script>
     const firebaseConfig = {
@@ -129,41 +114,42 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
+    const params = new URLSearchParams(window.location.search);
+    const product = {
+      name: params.get("name"),
+      price: params.get("price"),
+      img: params.get("img")
+    };
+
+    document.getElementById("signInForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const user = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        phone: document.getElementById("phone").value
+      };
+      localStorage.setItem("userDetails", JSON.stringify(user));
+      localStorage.setItem("productDetails", JSON.stringify(product));
+      window.location.href = "/pay";
+    });
+
     document.getElementById("googleBtn").addEventListener("click", () => {
       const provider = new firebase.auth.GoogleAuthProvider();
       auth.signInWithPopup(provider)
         .then(result => {
-          alert("Signed in as " + result.user.displayName);
+          const user = {
+            name: result.user.displayName,
+            email: result.user.email
+          };
+          localStorage.setItem("userDetails", JSON.stringify(user));
+          localStorage.setItem("productDetails", JSON.stringify(product));
           window.location.href = "/pay";
         })
         .catch(error => {
           alert("Google Sign-in Failed: " + error.message);
         });
     });
-
-    document.getElementById("signInForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const details = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        address: document.getElementById("address").value,
-        phone: document.getElementById("phone").value,
-      };
-      localStorage.setItem("userDetails", JSON.stringify(details));
-      window.location.href = "/pay";
-    });
-
-    // ✅ Display product info from query params
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
-    const price = params.get("price");
-    const img = params.get("img");
-
-    if (name && price && img) {
-      document.getElementById("product-name").innerText = name;
-      document.getElementById("product-price").innerText = price;
-      document.getElementById("product-img").src = img;
-    }
   </script>
 </body>
 </html>
