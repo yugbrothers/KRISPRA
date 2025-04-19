@@ -20,9 +20,6 @@
       height: auto;
       border-radius: 10px;
     }
-    .size-select {
-      margin: 20px 0;
-    }
   </style>
   <script type="module">
     window.onload = () => {
@@ -31,6 +28,7 @@
       document.getElementById("product-name").innerText = params.get("name");
       document.getElementById("product-price").innerText = params.get("price");
 
+      // Save to global variable for later
       window.productData = {
         name: params.get("name"),
         price: params.get("price"),
@@ -40,15 +38,19 @@
 
     window.proceedToSignIn = () => {
       const { name, price, img } = window.productData;
-      const size = document.querySelector('input[name="size"]:checked')?.value;
-      if (!size) return alert("Please select a size.");
-
-      const query = `?name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}&img=${encodeURIComponent(img)}&size=${size}`;
+      const query = `?name=${encodeURIComponent(name)}&price=${encodeURIComponent(price)}&img=${encodeURIComponent(img)}`;
       window.location.href = "/signin" + query;
     };
   </script>
 </head>
 <body>
+
+  <nav class="navbar">
+    <div class="logo">KRISPRA</div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
 
   <div class="checkout-container">
     <h1>Checkout</h1>
@@ -56,14 +58,6 @@
       <img id="product-img" src="" alt="Product Image" />
       <h2 id="product-name"></h2>
       <p id="product-price"></p>
-    </div>
-
-    <div class="size-select">
-      <strong>Select Size:</strong><br />
-      <label><input type="radio" name="size" value="S" /> S</label>
-      <label><input type="radio" name="size" value="M" /> M</label>
-      <label><input type="radio" name="size" value="L" /> L</label>
-      <label><input type="radio" name="size" value="XL" /> XL</label>
     </div>
 
     <button onclick="proceedToSignIn()">Proceed to Pay</button>

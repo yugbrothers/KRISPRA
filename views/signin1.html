@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Sign In | KRISPRA</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="/css/style.css" />
   <style>
     body {
@@ -22,10 +21,9 @@
       max-width: 500px;
       width: 100%;
     }
-    h1 {
+    .signin-container h1 {
       text-align: center;
       margin-bottom: 20px;
-      font-family: 'Playfair Display', serif;
     }
     .form-group {
       margin-bottom: 15px;
@@ -45,24 +43,6 @@
       border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
-    }
-    #googleBtn {
-      margin-top: 15px;
-      background: #ffffff;
-      border: 1px solid #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 500;
-      color: #555;
-    }
-    #googleBtn img {
-      width: 20px;
-      height: 20px;
     }
   </style>
 </head>
@@ -85,29 +65,9 @@
       </div>
       <button type="submit">Proceed</button>
     </form>
-
-    <div id="googleBtn">
-      <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google Logo" />
-      Sign in with Gmail
-    </div>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
-
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyASoCzGevOCyIYBX423Y15xWUm1pGSi9P0",
-      authDomain: "krispra-4211e.firebaseapp.com",
-      projectId: "krispra-4211e",
-      storageBucket: "krispra-4211e.appspot.com",
-      messagingSenderId: "1081828393087",
-      appId: "1:1081828393087:web:eaf90dc4393d2799c5ff4a"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
     const params = new URLSearchParams(window.location.search);
     const product = {
       name: params.get("name"),
@@ -127,25 +87,6 @@
       localStorage.setItem("userDetails", JSON.stringify(user));
       localStorage.setItem("productDetails", JSON.stringify(product));
       window.location.href = "/pay";
-    });
-
-    document.getElementById("googleBtn").addEventListener("click", () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .then(result => {
-          const user = {
-            firstName: result.user.displayName.split(" ")[0],
-            lastName: result.user.displayName.split(" ")[1] || "",
-            address: "Gmail Sign-in - Not Provided",
-            phone: "N/A"
-          };
-          localStorage.setItem("userDetails", JSON.stringify(user));
-          localStorage.setItem("productDetails", JSON.stringify(product));
-          window.location.href = "/pay";
-        })
-        .catch(error => {
-          alert("Google Sign-in Failed: " + error.message);
-        });
     });
   </script>
 </body>

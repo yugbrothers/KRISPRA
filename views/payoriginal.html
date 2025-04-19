@@ -17,21 +17,20 @@
     .product-info img {
       width: 100%;
       max-width: 300px;
+      height: auto;
       border-radius: 10px;
+    }
+    .hidden {
+      display: none;
+    }
+    .payment-options, .customer-details {
+      margin: 20px 0;
     }
     .confirmation {
       text-align: center;
       font-size: 22px;
       font-weight: bold;
       color: green;
-      margin-top: 20px;
-    }
-    .hidden { display: none; }
-    .details-box {
-      margin: 20px 0;
-      padding: 15px;
-      background: #f3f3f3;
-      border-radius: 10px;
     }
   </style>
 </head>
@@ -44,14 +43,13 @@
       <img id="product-img" src="" alt="Product Image" />
       <h2 id="product-name"></h2>
       <p id="product-price"></p>
-      <p><strong>Size:</strong> <span id="product-size"></span></p>
     </div>
 
-    <div class="details-box" id="customer-details">
-      <h3>Customer Details:</h3>
-      <p><strong>Name:</strong> <span id="cust-name"></span></p>
-      <p><strong>Address:</strong> <span id="cust-address"></span></p>
-      <p><strong>Phone:</strong> <span id="cust-phone"></span></p>
+    <div class="customer-details">
+      <h3>Enter Your Details</h3>
+      <input type="text" id="cust-name" placeholder="Full Name" required><br><br>
+      <input type="text" id="cust-phone" placeholder="Phone Number" required><br><br>
+      <input type="text" id="cust-address" placeholder="Delivery Address" required>
     </div>
 
     <div class="payment-options">
@@ -67,28 +65,40 @@
   </div>
 
   <script>
-    const product = JSON.parse(localStorage.getItem("productDetails"));
-    const user = JSON.parse(localStorage.getItem("userDetails"));
-
-    document.getElementById("product-name").innerText = product.name;
-    document.getElementById("product-price").innerText = product.price;
-    document.getElementById("product-img").src = product.img;
-    document.getElementById("product-size").innerText = product.size;
-
-    document.getElementById("cust-name").innerText = user.firstName + ' ' + user.lastName;
-    document.getElementById("cust-address").innerText = user.address;
-    document.getElementById("cust-phone").innerText = user.phone;
-
+    window.onload = () => {
+      const product = JSON.parse(localStorage.getItem("productDetails"));
+      const user = JSON.parse(localStorage.getItem("userDetails"));
+  
+      if (product) {
+        document.getElementById("product-name").innerText = product.name;
+        document.getElementById("product-price").innerText = product.price;
+        document.getElementById("product-img").src = product.img;
+      }
+  
+      if (user) {
+        const userInfo = `
+          <p><strong>Name:</strong> ${user.firstName || user.name} ${user.lastName || ''}</p>
+          <p><strong>Address:</strong> ${user.address || ''}</p>
+          <p><strong>Phone:</strong> ${user.phone || user.email}</p>
+        `;
+        document.getElementById("customer-info").innerHTML = userInfo;
+      }
+    };
+  
     document.getElementById("placeOrderBtn").addEventListener("click", () => {
       const selectedMethod = document.querySelector('input[name="payment"]:checked');
-      if (!selectedMethod) return alert("Please select a payment method.");
-
+      if (!selectedMethod) {
+        alert("Please select a payment method.");
+        return;
+      }
+  
       document.getElementById("confirmationMessage").classList.remove("hidden");
       document.getElementById("placeOrderBtn").disabled = true;
-
-      // Optionally send to server or email here using fetch/post
+  
+      // Optional: Send user/product info to backend here
     });
   </script>
+
 
 </body>
 </html>
